@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo Lez Girls</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --card: #1a1a24;
+  --border: #2a2a3a;
+  --accent: #c77dff;
+  --gold: #ffc83c;
+  --text: #e8e8f0;
+  --muted: #7878a0;
+  --sidebar-w: 210px;
+}
+body { background: var(--bg); color: var(--text); font-family: "DM Sans", sans-serif; min-height: 100vh; overflow-x: hidden; }
+
+/* HEADER */
+header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.97); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); }
+.header-top { padding: 14px 28px; display: flex; align-items: center; gap: 16px; }
+.header-title { font-family: "Playfair Display", serif; font-size: 1.4rem; font-weight: 700; white-space: nowrap; }
+.header-title span { color: var(--accent); }
+.header-divider { flex: 1; }
+.search-wrap { position: relative; }
+.search-input { background: var(--surface); border: 1px solid var(--border); color: var(--text); padding: 8px 16px 8px 36px; border-radius: 999px; font-size: 13px; font-family: "DM Sans", sans-serif; outline: none; transition: border-color 0.2s; width: 220px; }
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--muted); }
+.search-icon { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 13px; }
+
+/* MENU BUTTON (mobile) */
+.menu-btn { display: none; background: var(--surface); border: 1px solid var(--border); color: var(--text); width: 36px; height: 36px; border-radius: 8px; font-size: 16px; cursor: pointer; align-items: center; justify-content: center; flex-shrink: 0; }
+
+/* TOP TABS */
+.top-tabs { display: flex; padding: 0 28px; overflow-x: auto; scrollbar-width: none; border-top: 1px solid var(--border); background: var(--surface); }
+.top-tabs::-webkit-scrollbar { display: none; }
+.top-tab { padding: 10px 22px; font-size: 12px; font-weight: 600; font-family: "Oswald", sans-serif; color: var(--muted); background: none; border: none; border-bottom: 3px solid transparent; cursor: pointer; white-space: nowrap; transition: all 0.2s; letter-spacing: 0.12em; text-transform: uppercase; }
+.top-tab:hover { color: var(--text); }
+.top-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+.top-tab.exclusivo.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* LAYOUT */
+.layout { display: flex; min-height: calc(100vh - 105px); position: relative; }
+
+/* SIDEBAR */
+.sidebar { width: var(--sidebar-w); flex-shrink: 0; background: var(--surface); border-right: 1px solid var(--border); padding: 16px 0; position: sticky; top: 105px; height: calc(100vh - 105px); overflow-y: auto; transition: transform 0.25s ease; }
+.sidebar::-webkit-scrollbar { width: 3px; }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.sb-item { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px 18px; font-size: 12px; font-weight: 600; font-family: "Oswald", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); cursor: pointer; background: none; border: none; border-left: 3px solid transparent; transition: all 0.15s; text-align: left; }
+.sb-item:hover { color: var(--text); background: rgba(199,125,255,0.04); }
+.sb-item.active { color: var(--accent); border-left-color: var(--accent); background: rgba(199,125,255,0.06); }
+.sb-icon { font-size: 15px; }
+
+/* SIDEBAR OVERLAY (mobile) */
+.sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 199; }
+
+/* MAIN */
+main { flex: 1; padding: 28px 32px 80px; overflow-x: hidden; min-width: 0; }
+
+/* PILLS */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+.pill { padding: 7px 18px; font-size: 11px; font-weight: 500; font-family: "Oswald", sans-serif; letter-spacing: 0.1em; text-transform: uppercase; background: var(--card); border: 1px solid var(--border); color: var(--muted); border-radius: 999px; cursor: pointer; transition: all 0.2s; }
+.pill:hover { color: var(--text); border-color: var(--accent); }
+.pill.active { background: rgba(199,125,255,0.12); border-color: var(--accent); color: var(--accent); }
+
+/* BLOCKS */
+.cat-block { margin-bottom: 44px; scroll-margin-top: 120px; }
+.cat-header { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
+.cat-label { font-family: "Oswald", sans-serif; font-size: 1rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text); }
+.cat-line { flex: 1; height: 1px; background: linear-gradient(to right, var(--border), transparent); }
+.cat-count { font-size: 11px; color: var(--muted); }
+
+/* GRID */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); gap: 14px; }
+.card { border-radius: 10px; overflow: hidden; background: var(--card); border: 1px solid var(--border); cursor: pointer; transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s; }
+.card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 16px 36px rgba(199,125,255,0.15); }
+.card.exclusive { border-color: rgba(255,200,60,0.35); }
+.card.exclusive:hover { border-color: var(--gold); box-shadow: 0 16px 36px rgba(255,200,60,0.18); }
+.card-poster { position: relative; aspect-ratio: 2/3; overflow: hidden; background: var(--surface); }
+.card-poster img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
+.card:hover .card-poster img { transform: scale(1.04); }
+.card-poster .no-img { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 30px; }
+.badge { position: absolute; top: 8px; right: 8px; background: rgba(10,10,15,0.85); border: 1px solid var(--accent); color: var(--accent); font-size: 9px; padding: 3px 7px; border-radius: 4px; letter-spacing: 0.08em; text-transform: uppercase; font-family: "Oswald", sans-serif; }
+.excl-badge { position: absolute; top: 8px; left: 8px; background: rgba(10,10,15,0.85); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 3px 7px; border-radius: 4px; letter-spacing: 0.08em; font-family: "Oswald", sans-serif; }
+.card-info { padding: 9px 10px 11px; }
+.card-title { font-size: 12px; font-family: "Oswald", sans-serif; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+.card-sub { font-size: 11px; color: var(--muted); }
+
+.empty-msg { text-align: center; color: var(--muted); padding: 60px; font-size: 14px; display: none; }
+
+@media (max-width: 700px) {
+  .menu-btn { display: flex; }
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+    box-shadow: 8px 0 24px rgba(0,0,0,0.4);
+  }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-overlay.open { display: block; }
+  main { padding: 16px; }
+  .grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+  .header-title { font-size: 1.15rem; }
+  .search-input { width: 150px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <button class="menu-btn" id="menuBtn" onclick="toggleSidebar()">☰</button>
+    <span class="header-title">Catálogo <span>Lez Girls</span></span>
+    <div class="header-divider"></div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="search-input" type="text" placeholder="Buscar..." id="searchInput" oninput="filterAll()">
+    </div>
+  </div>
+  <div class="top-tabs" id="topTabs"></div>
+</header>
+
+<div class="layout">
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+  <nav class="sidebar" id="sidebar"></nav>
+  <main id="mainContent"></main>
+</div>
+<div class="empty-msg" id="emptyMsg">Nenhum resultado encontrado.</div>
+
+<script>
+/* ============================================================
+   📽️ DADOS DO CATÁLOGO — EDITE AQUI!
+   
+   Estrutura de cada item:
+   {
+     title: "Nome do Filme/Série",
+     img: "https://link-da-imagem.jpg",   ← cole o link do pôster aqui
+     sub: "1 Temporada",                  ← temporadas, ano, etc
+     country: "Tailandês",               ← país/origem
+     exclusive: true,                    ← true = badge dourado "Exclusivo"
+     badge: "Novo",                      ← texto do badge roxo (opcional)
+   }
+   
+   Dica de imagem: busque no Google o nome do filme + "poster"
+   Clique com botão direito na imagem → Copiar endereço da imagem
+   Cole no campo img: "..."
+   ============================================================ */
+
+const DATA = {
+
+  /* ── ABA: AGOSTO (NOVIDADES) ───────────────────────────── */
+  "Agosto": {
+    sidebar: [
+      {
+        label: "Tudo em Agosto",
+        icon: "🆕",
+        pills: [],
+        groups: [
+          {
+            name: "GLs",
+            items: [
+              { title: "AI Girl", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRGvRg4ARi8h1jk4onkyEWGbjwfG2zIzni_igqjjOjJA&s=10", sub: "GL Completo (Eps Finais)", exclusive: true, badge: "Atualizado" },
+              { title: "Moonshadow", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1ktxu2JrIM8PhI_WXawhNocpscJwC95H24Y4VW0iYQ2QNW2Ci_UGfw7U&s=10", sub: "Estreia (Eps 1-3)", exclusive: true, badge: "Atualizado" },
+              { title: "My Lady's Bodyguard", img: "https://m.media-amazon.com/images/M/MV5BYmI5NzQ3ZmUtZjQ5Ni00OGI3LWE3OWQtNjRiMTgwNjJlMzFjXkEyXkFqcGc@._V1_.jpg", sub: "Eps 7-10", exclusive: true, badge: "Atualizado" },
+              { title: "In Love Forever", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT1SaC1638YGj4hI_AsnyMlQI3PeOAT6hl1mmoMS50VfBm8sSSSSDj2BQ&s=10", sub: "Eps 8-11", exclusive: true, badge: "Atualizado" },
+              { title: "The Fire", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8W2tmuKaV8TXBiOnYdlbohzm1sAqSCTKo_y3N30xHqVUgJDdE0ZxuGkk&s=10", sub: "GL Completo (Eps Finais)", exclusive: true, badge: "Atualizado" },
+            ]
+          },
+          {
+            name: "Séries",
+            items: [
+              { title: "El Peligro de Quererte", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjOAbe2HRPqc_jmxIFSTNrqW62nDG3casyQ5Zhaui8VokCDMsbt74MT-__&s=10", sub: "Estreia (Eps 1-2)", exclusive: true, badge: "Novo" },
+              { title: "Vigil", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToJoahE3tvFCmLoiVoMZttjtI9L7yMUCmVn8pPNA8q4Q&s", sub: "3ª Temporada (Eps 1-2)", exclusive: true, badge: "Atualizado" },
+              { title: "Xeque Mate", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR42pxuIV81ojFNzmSU_jjuPJOgymQw6r-vN9rTTn_qpQ&s=10", sub: "3ª Temporada (Eps 1-4)", exclusive: true, badge: "Novo" },
+              { title: "Lioness", img: "https://cinemaeafins.com.br/wp-content/uploads/2026/07/lioness-temporada-3-poster.webp", sub: "3ª Temporada (Eps 1-5)", exclusive: true, badge: "Atualizado" },
+              { title: "Sterling Point", img: "https://media.fstatic.com/GcQpWx2dpi0w7NAIx4B_Rpxuw-E=/350x525/smart/filters:format(webp)/media/movies/covers/2026/08/cats_KgmK1Wf.png", sub: "1ª Temporada", exclusive: true, badge: "Novo" },
+              { title: "The Crow Girl", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmpvWC61NQPykJ25qWoA3LYTQLSvYrVNJQspPP_-NboPhWH3571NMHpV2Z&s=10", sub: "1ªT Completa / 2ªT Eps 1-2", exclusive: true, badge: "Novo" },
+              { title: "Ted Lasso", img: "https://static.wikia.nocookie.net/ted-lasso/images/6/65/Apple_TV_Ted_Lasso_Key_Art_S2.png/revision/latest?cb=20210726202629", sub: "4ª Temporada (Eps 1-5)", exclusive: true, badge: "Novo" },
+            ]
+          },
+          {
+            name: "Filmes",
+            items: [
+              { title: "Girlfriends", img: "https://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Girlfriends_2025_film_poster.jpg/250px-Girlfriends_2025_film_poster.jpg", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "I Fell, It's Fine", img: "https://m.media-amazon.com/images/M/MV5BZDE0MjdkZDUtMjczNS00YjJiLWE2MWMtNDY1NjIyOTMxZGVlXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "Sugar Baby", img: "https://m.media-amazon.com/images/M/MV5BZGQ4MGMwNGItNDJjYy00MDc2LTlmNDEtYzdhMTJiYzg1ZGU2XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true, badge: "Novo" },
+              { title: "Quinze Dias", img: "https://m.media-amazon.com/images/M/MV5BNjA2MjE5ZGUtNTFmNS00ZWEyLWI4ZTAtMjA2NTU3MmJiODRiXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "The Stain", img: "https://m.media-amazon.com/images/M/MV5BZjQ1NjMzODYtZDVhZi00YTBlLWJjNDMtNTgzMjA1ZTY5ODgwXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true, badge: "Novo" },
+            ]
+          },
+          {
+            name: "Novela Vertical",
+            items: [
+              { title: "Sua Garota dos Sonhos Me Quer", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTITBaZ2yc-HyxsfQbQLeihhlzAL1zh6n-bNjQS0ai2bA&s", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "My Rival, My Secret", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQXf_n3NjvVXU4Dvm8My9Iu18DLH-g5kuJKaQvWb-iDZA&s", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "My Seduction Trainee Feel For Me", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1uu8Vu5q8Zgjrs_RNFOwu4De18Jbp22GIbRxzDnRMtTGccj4NmpTWeE-N&s=10", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "Sob Cobertura: Na Cama da Patroa", img: "https://zshipubcf.farsunpteltd.com/playlet/1786608031_WtrZz2hYpr.jpg", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "Say Yes To My Tomboy Roommate", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrq4x-cUPr7zmYCV2fro0wBy636OgYuP5CXeqHziLT1U0ADy4YKdf0wOXI&s=10", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "Fascinada pela minha Professora", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSroEF3R9chvGsKTK-bmTd4GGrN2aFmwsW4YIIyhpnYB8c6lCrTlJKS0c&s=10", sub: "2026", exclusive: true, badge: "Novo" },
+              { title: "A Falsa Noiva da Rainha da Máfia", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4nv_kYxKaX2TT5sXhlSN4HXUuifWVEld_G_8q8G-Tri35GIhZj2gViKE&s=10", sub: "2026", exclusive: true, badge: "Novo" },
+            ]
+          },
+          {
+            name: "Anime",
+            items: [
+              { title: "Sayonara Lara", img: "https://m.media-amazon.com/images/M/MV5BOWVhMDE0ZTAtMjZjYi00NGQ5LTgxNjktMjA3MmE5YmI0NjM1XkEyXkFqcGc@._V1_.jpg", sub: "Eps 5-8", exclusive: true, badge: "Atualizado" },
+              { title: "Tai-Ari deshita", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdf8Swhs6NhyDY0qOGccF-fbrGmViNLC16kn8o2eoo8SzcyjQjjAPKpvM&s=10", sub: "Eps 5-8", exclusive: true, badge: "Atualizado" },
+              { title: "Kimi ga Shinu made Koi wo Shitai", img: "https://a.storyblok.com/f/178900/750x1061/7533098c6d/iwanttoloveyoutillyourdyingday_teaser.png/m/filters:quality(95)format(webp)", sub: "Eps 5-8", exclusive: true, badge: "Atualizado" },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: GIRLS LOVE ──────────────────────────────────── */
+  "Girls Love": {
+    sidebar: [
+      {
+        label: "Tailandês",
+        icon: "🇹🇭",
+        pills: [],
+        groups: [
+          {
+            name: "Tailandês",
+            items: [
+              { title: "Girl Rules", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/7TTvTcQGgSnHKi4TbX70s9tYhc0.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Love Beyond Dreams", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/reysv2rZI1AYnc4jIpdHzuSt5sG.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Fulfill", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/kwaFICOw9wyh0k6mCLurCU1pLjA.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Shades", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/vCtIUnr7bwKMfg4Ouu5lcly7FJb.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Shadow Of Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/613AmtIGnTHWBZPmaKpEeFONbeP.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "My Only Sunshine", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/qKvkzMcMyJqwfXJ1Yf8htggdOtE.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Play Park", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ge5wHhO5wumJ3oEECV8v6c7IwVU.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Frozen Valentine", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/9FHAzzB4bJRvUbuIgY1II7UNvDQ.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Heart Code", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ZQF0aHaxScOWRfAHzSWXTnyoVv.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "I Wanna Be SupTar", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ySeoQQSUalfIIvNfFnlRQemxS3i.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "ClaireBell", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/wNb7PxdshRHLkJiDgfOuDB0IamA.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Like A Palette", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/sqf4Rbl6Y75Qcnstvg3K1910ukT.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Theory Of Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ueSgjamAXZjjoEiSFERewjfLvAI.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Love Design", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ktfNihNYcpL07uHDBUroclNms1A.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Player Yuri", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/vyvsJk2eBoLPYUgy4Y5fbjCrqgH.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Queendom", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/cmowBj65IY7kJ3Dc6esUEzqnJnf.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Dangerous Queen", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/bPMnZtxk3ablkxp6T63SIyQeSVs.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Runaway", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/gJwrtp7YVGSme78ine0XdqvQwSc.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Mate", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/bu07vXvmdFHREbrn4MOGorw0MXo.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Mission: Love Or Lies", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/uo56x7PU9Ql6nFZDaEe2RLeDpz8.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Losing Control", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/o5fZ2XlUeUFWu1ItvFk7mpqq5d5.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Be My Angel", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/sLmTQXCY0mxwa6ZZteEzClRBpu4.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Im Your Moon", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/jPiSPYaWJyPPQKTkyhRuOEmoTa0.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Love Sênior Especial", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/8JtQsTqTmNrhCLt60WsXxwiCkLb.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "I Am Devil", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/y2GltWwi9yexKvppKMUgoldFAqN.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "B Friend", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/bX5hJ2Ruixitvuvpi3AfjrBDrxv.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Chasing Love", img: "https://preview.redd.it/thailand-chasing-love-ep-1-v0-wx5k5rrfjt2h1.jpg?width=1080&format=pjpg&auto=webp&s=8609e9ba02c07d3b5903f71bff0d5caf003d71a9", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Rental Love Lab", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGLFP2AKx6Yx8l5UlPc94Ut68nqYr0Q6XTwtkeIaRkILU98az2msGBGH3d&s=10", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Somewhere Somehow", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/d8YvEerCNvKpfXoJHpvp2XvqjKY.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Denied Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/tBUytTNmNeyZ8paoPOkXhspmjSl.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "AI Girl", img: "https://i.mydramalist.com/AB6JKP_4f.jpg", sub: "GL Completo", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "4 Elements",
+            items: [
+              { title: "The Earth", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/j51J5g8jupMuvlSCDFAyP9wH9vm.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "The Water", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/hPGRtuthwLU1uxDnV1ofiHlLaUb.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "The Air", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/nvkFkBXCmaLS8N1S7IcSi2Oh9cB.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "The Fire", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT8W2tmuKaV8TXBiOnYdlbohzm1sAqSCTKo_y3N30xHqVUgJDdE0ZxuGkk&s=10", sub: "GL Completo", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "JanJingling",
+            items: [
+              { title: "MuTeLuv", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mhxLX5eut9l5GiuZjF6obCvelhv.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Enemies With Benefits", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/fZfi91LR6vx68OhLAJKuScYAhRU.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "GinJay",
+            items: [
+              { title: "Poisonous Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ibGgOrHEPNcVBHdOkijk0bf8ax1.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "LenaMiu",
+            items: [
+              { title: "My Safe Zone", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/9vJMTObP0s8ijwwDu1TJaoK18nd.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "Englot",
+            items: [
+              { title: "The Water", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/hPGRtuthwLU1uxDnV1ofiHlLaUb.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "UnLimited Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/vXgGeGHnMlHivCEwISU79VOmSzY.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Petrichor", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/uKkVvz9K546om3dQ3Bt8uKNcyq1.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "LoveBully", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/5LT9mPPYuZt97ZsHHFTiwqAlTYZ.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Show Me Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/8QULpSnASKFjjxrMjWM9J1C1WdJ.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "LingOrm",
+            items: [
+              { title: "The Secret of Us", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/3GjOfzt4QO0W6TZrNmtxYz1iRuV.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Only You", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/uunNzunr9B94vzMysdremYfTLdZ.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "In Love Forever", img: "https://i.redd.it/new-poster-and-release-plan-for-in-love-forever-v0-2fcqp9tqtr4h1.jpg?width=3200&format=pjpg&auto=webp&s=5c00db8cd837137aed32ca5382930a47043be639", sub: "Eps 8-11", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "EmiBonnie",
+            items: [
+              { title: "Us", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/AdrzjDmSEdeZCCQSWA93XUjYk0P.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Peach and Me", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQ95uG_V63n_XiyadYs1BreiFxuhoKfw0heMiKv8a4YsOTM-Qu4YREGY0&s=10", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Moonshadow", img: "https://i.mydramalist.com/g0nd6v_4f.jpg", sub: "Estreia (Eps 1-3)", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "OrmFolk",
+            items: [
+              { title: "Apple My Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/n84yvifMQ2cir96IHVIRzVPk52h.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Your Apple", img: "https://i.mydramalist.com/ABAOP8_4f.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "My Lady's Bodyguard", img: "https://m.media-amazon.com/images/M/MV5BYmI5NzQ3ZmUtZjQ5Ni00OGI3LWE3OWQtNjRiMTgwNjJlMzFjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "Eps 7-10", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "LMSY",
+            items: [
+              { title: "Affair", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/sPK8f76tAfiZXZktYZ74TYGiqtW.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Harmony Secret", img: "https://media.themoviedb.org/t/p/w260_and_h390_face/3kYy3PfsqbXFSm54RR1saY0ZOYV.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Hometown Romance", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/jItKgcQ47OWUotC3GveVHkVmBnC.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "FreenBecky",
+            items: [
+              { title: "Gap The Series", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/jF7kr8IotMYsbef1cVj6Mebvfi0.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "The Loyal Pin", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/N6S8OSnihCpuDWMpeaT9gAo7SJ.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "The Air", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/nvkFkBXCmaLS8N1S7IcSi2Oh9cB.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "MilkLove",
+            items: [
+              { title: "23.5", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/qbJSWQWNCVnRIG4nNk2pVN1NFTK.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Whale Store Xoxo", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mWVDzFvAryOS4l1yA2ROpMTwQas.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "Faye",
+            items: [
+              { title: "Blank", img: "https://i.mydramalist.com/0wbrm7_4f.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Broken Of Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/kpq7STVKFwfLF19Gs5K6GaPEYmL.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "NamtanFilm",
+            items: [
+              { title: "Pluto", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/i4umoWmqGjVIMyAQYLL64lJcLoS.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "ShellyPundao",
+            items: [
+              { title: "Roller Coaster", img: "https://m.media-amazon.com/images/M/MV5BYTU5YjExNWYtYTYxZi00YzYyLWIxMjgtZjY0ZDRiMTExMGUwXkEyXkFqcGc@._V1_.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+          {
+            name: "Trilogia Reverse",
+            items: [
+              { title: "Reverse 4 You", img: "https://media.themoviedb.org/t/p/w260_and_h390_face/lPrePyTEavU5DG2lY3OUbpi1muk.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+              { title: "Reverse With Me", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/idu4BADOJei6SXQsBOf1M0P0u0s.jpg", sub: "1 Temporada", country: "Tailandês", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Vertical",
+        icon: "📱",
+        pills: [],
+        groups: [
+          {
+            name: "Vertical",
+            items: [
+              { title: "Falling For My Hater", img: "https://preview.redd.it/falling-for-my-hater-v0-u5ho90xrfqmg1.jpeg?width=640&crop=smart&auto=webp&s=9ac599ceb55b441012d7453e88f7434257ae7a68", sub: "Completo", country: "Vertical", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Coreano",
+        icon: "🇰🇷",
+        pills: [],
+        groups: [
+          {
+            name: "Coreano",
+            items: [
+              { title: "Almost Lover", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjvKC8bqMhvgX0DGVgHR1YQFVeQ9QmulUhDw&s", sub: "2 Episódios", country: "Coreano", exclusive: true },
+              { title: "On&Off", img: "https://i.mydramalist.com/3oRzJe_4c.jpg?v=1", sub: "3 Temporadas", country: "Coreano", exclusive: true },
+              { title: "Scandal Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/6CeXhf5xGbwlZCCwz8cwNh6wc9C.jpg", sub: "1 Temporada", country: "Coreano", exclusive: true },
+              { title: "Midnight Mart", img: "https://i.mydramalist.com/YY2kKP_4c.jpg?v=1", sub: "1 Temporada", country: "Coreano", exclusive: true },
+              { title: "Love Tech", img: "https://i.mydramalist.com/W43rO_4f.jpg", sub: "Curta", country: "Coreano", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Chinês",
+        icon: "🇨🇳",
+        pills: [],
+        groups: [
+          {
+            name: "Chinês",
+            items: [
+              { title: "Second Take", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/gPEWAHR7DiY8LwB3hSTDeQxMeg9.jpg", sub: "1 Temporada", country: "Chinês", exclusive: true },
+              { title: "The Secret Of Girls", img: "https://preview.redd.it/china-the-secret-of-girls-eps-1-to-8-finale-v0-56g5olbhkqxf1.jpg?width=1080&format=pjpg&auto=webp&s=a45573106d532e7742346eb44e25ba435ebce3fc", sub: "1 Temporada", country: "Chinês", exclusive: true },
+              { title: "Couple Of Mirrors", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/pdgbMKxiRMgMPziBjKxyLvPqgs5.jpg", sub: "1 Temporada", country: "Chinês", exclusive: true },
+              { title: "Candy", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/3xzH2dUaqReMocxfBWU19wOa5hI.jpg", sub: "1 Temporada", country: "Chinês", exclusive: true },
+              { title: "Duet Of Shadows", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/w9oHd7XtloPcPMLiVXfZxat71Jr.jpg", sub: "1 Temporada", country: "Chinês", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Japonês",
+        icon: "🇯🇵",
+        pills: [],
+        groups: [
+          {
+            name: "Japonês",
+            items: [
+              { title: "Chaser Game W", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mXT6Hm4CcmaEqJ51P4HeESf1g9F.jpg", sub: "2 Temporadas", country: "Japonês", exclusive: true },
+              { title: "Even Though We're Adults", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ehWJjAxKnwP14zuTvGDmHJR79BN.jpg", sub: "1 Temporada", country: "Japonês", exclusive: true },
+              { title: "Ayaka is in Love with Hiroko", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/pS5d64hiz0ITNpP2pSp7IthaLUy.jpg", sub: "2 Temporadas", country: "Japonês", exclusive: true },
+              { title: "Call Me By No Name", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/iWRPz5nJiGYm1bi8cdHFqd9DQxa.jpg", sub: "1 Temporada", country: "Japonês", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Taiwan",
+        icon: "🇹🇼",
+        pills: [],
+        groups: [
+          {
+            name: "Taiwan",
+            items: [
+              { title: "The Way Back To You", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ri5ZZVNpD17jaojVrn3MgwNSc22.jpg", sub: "1 Temporada", country: "Taiwan", exclusive: true },
+              { title: "Fragrance of the First Flower", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/oHk0hAWl0XSdznebGzoD6ewYFhF.jpg", sub: "2 Temporadas", country: "Taiwan", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Filipino",
+        icon: "🇵🇭",
+        pills: [],
+        groups: [
+          {
+            name: "Filipino",
+            items: [
+              { title: "Sleep With Me", img: "https://i.pinimg.com/736x/99/11/96/9911963b23e2f852de0b454aeee8787b.jpg", sub: "1 Temporada", country: "Filipino", exclusive: true },
+              { title: "Lulu", img: "https://m.media-amazon.com/images/M/MV5BZmRiNzk4YTItY2ZhYS00YWZhLTkzMDAtZTllZmVkMjIxZGMyXkEyXkFqcGc@._V1_.jpg", sub: "1 Temporada", country: "Filipino", exclusive: true },
+              { title: "BetCin", img: "https://m.media-amazon.com/images/M/MV5BYWQwMzMyZDQtZTY3ZS00MTJjLWI1MTEtYzNjN2ZjYjcxZGNiXkEyXkFqcGc@._V1_.jpg", sub: "1 Temporada", country: "Filipino", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Dorama",
+        icon: "🎭",
+        pills: [],
+        groups: [
+          {
+            name: "KDoramas",
+            items: [
+              { title: "Clímax", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/zN3Vg1KAhLsOuUxIzB8buu6XmC6.jpg", sub: "1 Temporada", country: "Dorama", exclusive: true },
+              { title: "Friendly Rivalry", img: "https://media.themoviedb.org/t/p/w260_and_h390_face/mdgfj0vRYr8ydGTgYGSl3HkGkUk.jpg", sub: "1 Temporada", country: "Dorama", exclusive: true },
+              { title: "Girl From Nowhere: The Reset", img: "https://media.themoviedb.org/t/p/w260_and_h390_face/98JA2PldgfAK16A8xZTRc2wyqTU.jpg", sub: "1 Temporada", country: "Dorama", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Curtas",
+        icon: "🎬",
+        pills: [],
+        groups: [
+          {
+            name: "Curtas",
+            items: [
+              { title: "Before It's Too Late", img: "https://i.mydramalist.com/JB8e4X_3m.jpg", sub: "Curta", country: "Curtas", exclusive: true },
+              { title: "Unclosed Memory", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFlq8NfIO91XyJLzfTk2_LwHfCi_u3hD8-tg&s", sub: "Curta", country: "Curtas", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: SÉRIES ──────────────────────────────────────── */
+  "Séries": {
+    sidebar: [
+      {
+        label: "Mistério",
+        icon: "🔎",
+        pills: [],
+        groups: [
+          {
+            name: "Mistério",
+            items: [
+              { title: "The Jetty", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/tnAqJLimm8aW6A1wkOPul3IbQBb.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Vigil", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/5zAheY0Upi2MwU3edGtEgb7Ldh3.jpg", sub: "3 Temporadas (Eps 1-2)", exclusive: true },
+              { title: "The Crow Girl", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmpvWC61NQPykJ25qWoA3LYTQLSvYrVNJQspPP_-NboPhWH3571NMHpV2Z&s=10", sub: "1ªT Completa / 2ªT Eps 1-2", exclusive: true },
+              { title: "NCIS: Hawai'i", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/umQMuK0eWy5lVVOg2COeOJ0rjDf.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Hightown", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/69hornrvpKWIzBMCNzsVTZOggOw.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Under the Bridge", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/ca8oSnPFQ3zOykasqnsWF9K2zfo.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Deadloch", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/7rI7T4AfSzOx0Rqw73AusyIpeXf.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "PLL: Summer School", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/azM9UjebtKPSUvfGmGby3IcmXgc.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "Ponies", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/5b4fmLexJl31U04LWyUWPUsvthN.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "The Hunting Wives", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/knR0tDKgFwsUMxe0MqZSWQYhwpL.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Pluribus", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/p9J7CXVI5gjkyUo6trV7m85gssW.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Pura Sangre", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/7XeKdFxONDzITjPLD1ySGJ637M6.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Las Largas Sombras", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/yZUk3cLiiPhBZL6FvIX9Y4fKODt.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "A Mujer del Diablo", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/8veayceUqkoM9YXJQhuJU6PfSiC.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Entrevías", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/6hZ3cqnkRFgnrxKzil35hFcyD0G.jpg", sub: "4 Temporadas", exclusive: true },
+              { title: "Death and Other Details", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTocmjy8e2zcli6lobLZuOrY8FYP81BaCUDYEVJTJ3iNHmuxXXfwB8Lih0&s=10", sub: "1 Temporada", exclusive: true },
+              { title: "Nine Perfect Strangers", img: "https://resizing.flixster.com/WBK6aQF1y-l7lV1A7697wjNgmtY=/ems.cHJkLWVtcy1hc3NldHMvdHZzZXJpZXMvYjdlMjMxYmMtNzI1OC00ZDIyLWI4NTYtYWJkMjZhMzRiYjZiLmpwZw==", sub: "2 Temporadas", exclusive: true },
+              { title: "The Last Of Us", img: "https://m.media-amazon.com/images/M/MV5BYWI3ODJlMzktY2U5NC00ZjdlLWE1MGItNWQxZDk3NWNjN2RhXkEyXkFqcGc@._V1_.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "Monarch: Legado de Monstros", img: "https://br.web.img3.acsta.net/pictures/23/10/10/14/34/4552606.jpg", sub: "2 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Ação",
+        icon: "💥",
+        pills: [],
+        groups: [
+          {
+            name: "Ação",
+            items: [
+              { title: "Operação Lioness", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/vAWbuHR9u9mHI9CjP3JBpRxtdRZ.jpg", sub: "3ª Temporada (Eps 1-5)", exclusive: true },
+              { title: "Spartacus: House of Ashur", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/yJQGiHcHWofZEL5mDvSgbVMUMUK.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "A Filha da Lei", img: "https://m.media-amazon.com/images/M/MV5BMzY5MGE0MmItZDVmNi00YWM3LWEzZWYtOTBmZTE1ZGM3YjM0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "1 Temporada", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Drama",
+        icon: "🎭",
+        pills: [],
+        groups: [
+          {
+            name: "Drama",
+            items: [
+              { title: "El Peligro de Quererte", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjOAbe2HRPqc_jmxIFSTNrqW62nDG3casyQ5Zhaui8VokCDMsbt74MT-__&s=10", sub: "Estreia (Eps 1-2)", exclusive: true },
+              { title: "Sterling Point", img: "https://media.fstatic.com/GcQpWx2dpi0w7NAIx4B_Rpxuw-E=/350x525/smart/filters:format(webp)/media/movies/covers/2026/08/cats_KgmK1Wf.png", sub: "1 Temporada", exclusive: true },
+              { title: "The Girls on the Bus", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/c75gEMVMws14EvBiCpjXltSjxtp.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Good Trouble", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/tmB1PghtrIBbdrFAmRncuO1wQLQ.jpg", sub: "5 Temporadas", exclusive: true },
+              { title: "How & Harper", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/qqM46MePDr9BTU3qoNBFTBIZcqb.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "L'Arte Della Gioia", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/r85DN0RFD2fJPgXIha4PwAEl3kG.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "El Fin del Amor", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/x9Tq1h4SI8f4BGd3f0XUNbEY1sl.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "The Buccaneers", img: "https://m.media-amazon.com/images/M/MV5BOGEwOGZkNzItMDAxYy00NjgzLTg0NTItMjUxNDE5ZTM0ZjdlXkEyXkFqcGc@._V1_.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "Hotel Mondial", img: "https://cdn.moviefone.com/image-assets/220507/67tBJ0PafW0pHGroLK2cKDuxOIf.jpg?d=360x540&q=80", sub: "2 Temporadas", exclusive: true },
+              { title: "The Morning Show", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTlrKxWZzC5k1jORmojwPRTASNwtvBelFGzS3oUMnX7EbJ-PqbBQyweNKWi&s=10", sub: "4 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Nacionais",
+        icon: "🇧🇷",
+        pills: [],
+        groups: [
+          {
+            name: "Nacionais",
+            items: [
+              { title: "Juntas & Separadas", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/fDIK99ZRWMTlaUoekXRKqoQe0xr.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Angela Diniz", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/vv06mGgXN8nJ6N7BRWAMRf41dRY.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Tremembé", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/eVqBFACBpovk0sEtjx3HEb3jOYS.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Amor da Minha Vida", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/2XUYvueGtMFdfMxDmu5wliPtKMi.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Máscaras de Oxigênio Não Cairão Automaticamente", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/7pFVVWbJTFBuXI6GOVFSzjoxeJd.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "As Five", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/3vWANjNHJvgkwBzE2x6kWOiKSXo.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Vermelho Sangue", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/xJ4UEA5VA7L1bpn0Q4xZw80K2xT.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Tudo Igual SQN", img: "https://br.web.img3.acsta.net/pictures/22/05/11/20/38/5409474.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "De Volta aos 15", img: "https://m.media-amazon.com/images/M/MV5BZjkzZTI0NjgtYjNkMi00YjhiLTljMjctZDBmMTY1Y2U2MzkxXkEyXkFqcGc@._V1_.jpg", sub: "3 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Comédia",
+        icon: "😂",
+        pills: [],
+        groups: [
+          {
+            name: "Comédia",
+            items: [
+              { title: "Ted Lasso", img: "https://static.wikia.nocookie.net/ted-lasso/images/6/65/Apple_TV_Ted_Lasso_Key_Art_S2.png/revision/latest?cb=20210726202629", sub: "4ª Temporada (Eps 1-5)", exclusive: true },
+              { title: "We Are Lady Parts", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/bWqvznpdhncPxVu03QbNmywryhm.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "I Love LA", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/6xrLXEQABvoVwGka9KDDAOt4lFs.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Such Brave Girls", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/7g60yren32dIyR0ZsMFPXWn3vGt.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Machos Alfa", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/hnwP1TW2kcO7EVr3Vx7VWCPxcy8.jpg", sub: "5 Temporadas", exclusive: true },
+              { title: "Harlem", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/hQP2zAm5L52vs7fp3JzOI5LZ4uB.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Hacks", img: "https://www.chippu.com.br/_next/image?url=https%3A%2F%2Fd2d7ho1ae66ldi.cloudfront.net%2FArquivoTitulos%2F1d1dd7fd-bd58-11ed-aa6e-9587410378a2%2F800_Hacks_poster.jpg&w=3840&q=75", sub: "5 Temporadas", exclusive: true },
+              { title: "And Just Like That", img: "https://bravo.abril.com.br/wp-content/uploads/2025/08/key-art_7.jpg?quality=70&strip=info&w=720&crop=1", sub: "3 Temporadas", exclusive: true },
+              { title: "Upload", img: "https://br.web.img2.acsta.net/pictures/20/03/17/07/27/1660652.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Dix Pour Cent", img: "https://m.media-amazon.com/images/M/MV5BYTJkZDVkMWEtZmNmMC00YjRhLWFjOGEtZWMzNDFkZDdjZmQ3XkEyXkFqcGc@._V1_.jpg", sub: "4 Temporadas", exclusive: true },
+              { title: "Deacloch", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWzwjZcb0L5S_B5pSwP7Rqw6d9cFVwV3lRNLOFpN0v4LxF4nPO4G09z1Ez&s=10", sub: "2 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Adolescente",
+        icon: "🎒",
+        pills: [],
+        groups: [
+          {
+            name: "Adolescente",
+            items: [
+              { title: "Ginny & Georgia", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/uKval7QmEozy7R05FEvE3H9Qice.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Heartbreak High", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/fvcunpCCpYgYVbtnt0j9AHFNUw4.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Derry Girls", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/btIm8LOtm2qgHIA2IHmQJvD1Mju.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Sugar Rush", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/YEW7UwhDpVo6N1tpNHGmC9ZjNO.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "Heartstopper", img: "https://br.web.img2.acsta.net/pictures/22/04/13/20/15/5784725.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "Euphoria", img: "https://emprendiendounviajeentreloslibros.wordpress.com/wp-content/uploads/2019/08/5mi3arl16ykmfpqjmzvqn5txkda.jpg?w=400", sub: "3 Temporadas", exclusive: true },
+              { title: "We Are Who We Are", img: "https://m.media-amazon.com/images/M/MV5BNTc1ZTE0MDItOWI5Yi00M2Y1LThhMmYtMWRmZDUwYzAxOTkxXkEyXkFqcGc@._V1_.jpg", sub: "1 Temporada", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Fantasia",
+        icon: "🐉",
+        pills: [],
+        groups: [
+          {
+            name: "Fantasia",
+            items: [
+              { title: "DC Legends of Tomorrow", img: "https://media.themoviedb.org/t/p/w260_and_h390_face/AcEFDh272YVTR6B6zrrusk8BjJG.jpg", sub: "7 Temporadas", exclusive: true },
+              { title: "Stranger Things", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/twfKp60THrcOIep9sjHODOOfO8d.jpg", sub: "5 Temporadas", exclusive: true },
+              { title: "Cat's Eyes", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRs3ayWYnSQBKaSns97fAyvT_OGMF0mecuqylehLx2vCkp0429srmJDgfyZ&s=10", sub: "1 Temporada", exclusive: true },
+              { title: "Black Mirror - Hotel Rivere", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQg8WtE_Kw1L-IceD6wUYPWLayLmiAhJKOHapRDtwoQAqkmWV6ZDveUZtFl&s=10", sub: "Episódio Único", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Universo Médico",
+        icon: "🏥",
+        pills: [],
+        groups: [
+          {
+            name: "Universo Médico",
+            items: [
+              { title: "Grey's Anatomy", img: "https://www.themoviedb.org/t/p/w1280/vrChGRs0DsoCoaeHif8PlZY637Q.jpg", sub: "22 Temporadas", exclusive: true },
+              { title: "Station 19", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/kBhkpvuX03OWuLe8AupIjP8N7uk.jpg", sub: "7 Temporadas", exclusive: true },
+              { title: "9-1-1", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/6njUqsd3By2mJsdZm1P0moPLzs3.jpg", sub: "9 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Minissérie",
+        icon: "📺",
+        pills: [],
+        groups: [
+          {
+            name: "Minissérie",
+            items: [
+              { title: "Split", img: "https://m.media-amazon.com/images/M/MV5BMzhkMDRjZDUtODc0YS00ZTUzLThkODYtMWFhMTVmZTI1Mzk2XkEyXkFqcGc@._V1_.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Universalles", img: "https://m.media-amazon.com/images/M/MV5BY2MwMjAyMWUtNDU1Yy00MTlhLWI1OWYtODEwOTIwNWE4ODZkXkEyXkFqcGc@._V1_.jpg", sub: "Minissérie", exclusive: true },
+              { title: "Mulheres às Armas", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9z7PhgQlrnp1BSHDY8pMuJEduqMwXsmF0z5kXxsLdmndnPv3o_04elbQf&s=10", sub: "Minissérie", exclusive: true },
+              { title: "Inferno em La Palma", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTe5RhG1IW6P21sB_EiMqxulYjXG0XNTT_7Pw6cFsWDgqoJEUuuZzxymtAE&s=10", sub: "Minissérie", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Universo Skam",
+        icon: "🇳🇴",
+        pills: [],
+        groups: [
+          {
+            name: "Universo Skam",
+            items: [
+              { title: "Skam Espanha", img: "https://media.fstatic.com/xj6-ygXWdoCiRhHq5wOfISP_RNg=/350x525/smart/filters:format(webp)/media/movies/covers/2019/06/0720704.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "Skam França", img: "https://media.fstatic.com/PhlgWm3pYXiqtuCZGaymY9t4JkQ=/350x525/smart/filters:format(webp)/media/movies/covers/2020/05/14068.jpg", sub: "6 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Universo Handmaid",
+        icon: "🔴",
+        pills: [],
+        groups: [
+          {
+            name: "Universo Handmaid",
+            items: [
+              { title: "O Conto da Aia", img: "https://m.media-amazon.com/images/M/MV5BODc0ZWMxNWQtMThjOS00MjMzLTkwYjctNzhkMGRkNTNmYTNjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "6 Temporadas", exclusive: true },
+              { title: "The Testaments", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrtLPtSl2ybg1o6-b3EMgY6pC3h3fUP9GcJAjPhGde3Lm4v65dL22zhKI&s=10", sub: "1 Temporada", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Suspense",
+        icon: "😱",
+        pills: [],
+        groups: [
+          {
+            name: "Suspense",
+            items: [
+              { title: "From", img: "https://m.media-amazon.com/images/M/MV5BNDAwNDljNWEtNWE1Zi00YjFlLWEzM2UtY2E3ZTM1MTcxMTcyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "4 Temporadas", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: FILMES ──────────────────────────────────────── */
+  "Filmes": {
+    sidebar: [
+      {
+        label: "2026 (Atuais)",
+        icon: "🆕",
+        pills: [],
+        groups: [
+          {
+            name: "2026 (Atuais)",
+            items: [
+              { title: "Girlfriends", img: "https://upload.wikimedia.org/wikipedia/en/thumb/4/4e/Girlfriends_2025_film_poster.jpg/250px-Girlfriends_2025_film_poster.jpg", sub: "2026", exclusive: true },
+              { title: "Quinze Dias", img: "https://m.media-amazon.com/images/M/MV5BNjA2MjE5ZGUtNTFmNS00ZWEyLWI4ZTAtMjA2NTU3MmJiODRiXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true },
+              { title: "The Stain", img: "https://m.media-amazon.com/images/M/MV5BZjQ1NjMzODYtZDVhZi00YTBlLWJjNDMtNTgzMjA1ZTY5ODgwXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true },
+              { title: "Montreal, My Beautiful", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmiaCeL8c3R5KAThE7t6tCe8t0clLDqFhwRZwaM7htvw&s=10", sub: "2026", exclusive: true },
+              { title: "Drea & Cloe", img: "https://m.media-amazon.com/images/M/MV5BNGRmOWIwZDEtMjlmYy00YTQ0LWJlNDUtMzQ3ZDRjODg1ZWIxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2026", exclusive: true },
+              { title: "Twisted", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtkzWCyJmB1nK0YhJ0pCDpadMyodO-QLQ4VLgzQ_UW2Q&s=10", sub: "2026", exclusive: true },
+              { title: "Accused", img: "https://a.ltrbxd.com/resized/film-poster/1/2/7/4/0/0/0/1274000-accused-2026-0-230-0-345-crop.jpg?v=aa8a61c8bf", sub: "2026", exclusive: true },
+              { title: "Whistle", img: "https://m.media-amazon.com/images/M/MV5BYjY1NzE2OGItMzkyMy00ODczLWE4MWMtY2YzMjJhYzQ5NjYxXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true },
+              { title: "Saccharine", img: "https://cineamo-tmdb.b-cdn.net/t/p/w780/wTlqMc4Jt8ZBtHh8CREblU3ajAB.jpg?width=640", sub: "2026", exclusive: true },
+              { title: "Open Endings", img: "https://m.media-amazon.com/images/M/MV5BMGQxZWFlMzItNjcwMC00YTk0LThmMTgtMzY4NmI5ZTZiMzJhXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true },
+              { title: "Private Hell", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0J1PLaD0xLLrLdfB2rF70Qpvc4tjGhcZJfowjErM2v0CpaXMzAN7sF22A&s=10", sub: "2026", exclusive: true },
+              { title: "I Fell, It's Fine", img: "https://m.media-amazon.com/images/M/MV5BZDE0MjdkZDUtMjczNS00YjJiLWE2MWMtNDY1NjIyOTMxZGVlXkEyXkFqcGc@._V1_.jpg", sub: "2026", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Curtas",
+        icon: "🎬",
+        pills: [],
+        groups: [
+          {
+            name: "Curtas",
+            items: [
+              { title: "The Non-Actor", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIQ-hfBwgfToUwJFyM05JtCoKlcYPb6h1fh0Q9cT21PMlyf7zUM3b_8z9I&s=10", sub: "2025", exclusive: true },
+              { title: "Fall Risk", img: "https://m.media-amazon.com/images/M/MV5BMjA4ZmMzZmQtN2MxNS00YTY4LThmMTgtMTZlMWVkZmVkNTg4XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+              { title: "Let", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ7GE57bdtRm4X4kJngH-9Yzswopj-Ae6BMs1DMXwDrcAdHZbwg8yhDOhRn&s=10", sub: "2024", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Cenas Quentes",
+        icon: "🔥",
+        pills: [],
+        groups: [
+          {
+            name: "Cenas Quentes",
+            items: [
+              { title: "Sugar Baby", img: "https://m.media-amazon.com/images/M/MV5BZGQ4MGMwNGItNDJjYy00MDc2LTlmNDEtYzdhMTJiYzg1ZGU2XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+              { title: "Love Lies Bleeding", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQyln5ix7_swNEhPtS2B_q_gubvZS3xIxQHuSnmaBdg7Wosp0Wr-9sIgEo&s=10", sub: "2024", exclusive: true },
+              { title: "Maya e Samar", img: "https://m.media-amazon.com/images/M/MV5BYWY3ZDA1NGUtNzY0OC00ODFlLTgyY2ItMjRhZDhkMWIzZDk0XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "Entre Nós, o Amor", img: "https://ingresso-a.akamaihd.net/prd/img/movie/entre-nos-o-amor/23dcc02b-e82e-4467-9de0-6fd19ddc4653.webp", sub: "2024", exclusive: true },
+              { title: "Hot Milk", img: "https://m.media-amazon.com/images/S/pv-target-images/89b896ca3d5a17a25ea2ff71f99180870770344bbf30c89bae18781751b164d0._UR2000,3000_CLs%7C2000,3000%7C/G/bundle/BottomRightCardGradient2x3.png,/G/01/digital/video/merch/subs/benefit-id/a-f/docclub/logos/channels-logo-white.png%7C0,0,2000,3000+0,0,2000,3000+1050,2771,863,142_kv4117026dd36ec0b24d223ac808b78fbe_.jpg", sub: "2025", exclusive: true },
+              { title: "Corações Roubados", img: "https://m.media-amazon.com/images/M/MV5BNGNkOWMzOTgtNDhhOC00ZWVkLTliYTYtYTBhYmRmYzVkNzk2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Prazer sem Limites", img: "https://m.media-amazon.com/images/M/MV5BMWQ0MmRhMDMtNzRmMi00NWM4LTkyNzMtODE1MGZjZWQxODBiXkEyXkFqcGc@._V1_.jpg", sub: "2023", exclusive: true },
+              { title: "The Duke of Burgundy", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtXoc91KZ5WoGV9IPKhyvLZOBX_PleTReZl4DVNjKDAA&s=10", sub: "2014", exclusive: true },
+              { title: "My Sole Desire", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd7UAnvLlhlHJozjGMLW_VSrO0x6chj3Qdtp-Q1-E1oL9fKDkKW_Y0izY5&s=10", sub: "2022", exclusive: true },
+              { title: "Wild Side", img: "https://m.media-amazon.com/images/M/MV5BNzJjZDcyMmQtOWRlNy00MzM1LTk4MzItMDk4MGI3NmUwM2IyXkEyXkFqcGc@._V1_.jpg", sub: "1995", exclusive: true },
+              { title: "Toy", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR2RIqirtaNw91OMsxPpQ89Fr59B-s9o7ofydkJVS3qoJfkq0xwwPT1z8s&s=10", sub: "2016", exclusive: true },
+              { title: "Compulsion", img: "https://image.tmdb.org/t/p/w500/s3MzSdsMcmxmpVJMuH5ezNPjzs7.jpg", sub: "2024", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Drama",
+        icon: "🎭",
+        pills: [],
+        groups: [
+          {
+            name: "Drama",
+            items: [
+              { title: "Fancy Dance", img: "https://image.tmdb.org/t/p/original/A0F8ZWVbejXWzaW7UXfp9drlLZQ.jpg", sub: "2024", exclusive: true },
+              { title: "I Saw the TV Glow", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjcAXwGQpVrqu7ymWXeBJZK5tDfpCKctkqtzIKI8G7pK8t7apr0HPnXuo&s=10", sub: "2024", exclusive: true },
+              { title: "Mosquita y Mari", img: "https://m.media-amazon.com/images/M/MV5BYzQ5ZjVjZDctZDk3MS00MzI5LTk1OGEtZjlhMDFkMTQ4MDI4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2012", exclusive: true },
+              { title: "Foreign Language", img: "https://m.media-amazon.com/images/M/MV5BMGEwYmFkNDEtMDZmYS00MDMwLTlmM2MtNGYwZjk1MTM0NTY3XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+              { title: "Todo o Silêncio", img: "https://br.web.img2.acsta.net/c_310_420/img/94/e9/94e9ce3a27b96a3f30e240730923ce5f.jfif", sub: "2023", exclusive: true },
+              { title: "Bye Bye Blondie", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNey52sT_3AlduAfiY9Wwo2mHqhQxs_fA-XYAbhSgft3Fdlgz75NlAOYo&s=10", sub: "2012", exclusive: true },
+              { title: "Blush", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSjIwFzn_boC3UGgt_NyTNSBL9M1ZhNDFwsgM9O8Vxrjq8LxK7cg9GY928&s=10", sub: "2015", exclusive: true },
+              { title: "Aimée & Jaguar", img: "https://m.media-amazon.com/images/S/pv-target-images/636795e45fdd46554bff85baaebf208f875e6026e0b3e618d9ea4d2230a78fe6.jpg", sub: "1999", exclusive: true },
+              { title: "Birds of Paradise", img: "https://indika.tv/images/filmes8/Birds-of-Paradise.jpg", sub: "2021", exclusive: true },
+              { title: "La Répétition", img: "https://fr.web.img2.acsta.net/medias/nmedia/00/02/27/45/69214714_af.jpg", sub: "2001", exclusive: true },
+              { title: "Skin Deep", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAZnqT-I2J_r2CcHGReoipf9nwk7Ka215PGPQiFTVtqygxmX-sk-BvO7U&s=10", sub: "2015", exclusive: true },
+              { title: "Rivière", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSc58TgSJ-rscBcAuFXAbwrPMJsBaIJvts7bcQHuo2NBIc162T5qLS1DMA&s=10", sub: "2023", exclusive: true },
+              { title: "Dreamers", img: "https://m.media-amazon.com/images/M/MV5BMTI3MjhlNjEtZDVkNy00NTA2LWFiN2EtNmY0MTEzYjY2ZDhiXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "My Mother's Wedding", img: "https://m.media-amazon.com/images/M/MV5BZmYyNGMzYWUtY2I1OC00MTI3LTg4NzEtMWZhZmRhNzY0MDRkXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "100 Nights of Hero", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTR269D393U5m-jm0Hl2jNmQzaXMIlNMKiBoZU9Mz02gXXZywz9fI2hCNde&s=10", sub: "2025", exclusive: true },
+              { title: "Love Letters", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSorwPrUKnwdVoeSK7dG7nOmaE5KENZtFp7ac4AW1JBxF7B6lR-3OaZ6UYY&s=10", sub: "2025", exclusive: true },
+              { title: "Love Me Tender", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtpZ6qbYORJPceMe4gdJq-9rISAbmwocjdhat2N5Gmb3-UyfNOM0YX54bi&s=10", sub: "2025", exclusive: true },
+              { title: "Time Was", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT97BHPn_OGRlVk4Gl67XLmihCGokTB0DThk6SERQkXHd9IQA_0EpUMB_bp&s=10", sub: "2025", exclusive: true },
+              { title: "Patty Is Such a Girl", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTbyPGd_qMaNrEdHQwu1GxmdRAxB0vg8M7h85Ocbu3-oA&s", sub: "2025", exclusive: true },
+              { title: "La Petite Dernière", img: "https://m.media-amazon.com/images/I/81rWwP-VvfL._AC_UF1000,1000_QL80_.jpg", sub: "2025", exclusive: true },
+              { title: "Julian", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ1RrhdwCARtQIJdLX0sbyTKAdd8e0tn5B1vbJADJj-tA&s=10", sub: "2025", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Suspense",
+        icon: "😱",
+        pills: [],
+        groups: [
+          {
+            name: "Suspense",
+            items: [
+              { title: "Compulsion", img: "https://m.media-amazon.com/images/M/MV5BZTE0ZTY4ZmUtNWY2Mi00MmNhLWE3MzUtODhiZTU0OGFhNTE3XkEyXkFqcGc@._V1_.jpg", sub: "2017", exclusive: true },
+              { title: "How to Blow Up a Pipeline", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKRUabRWk1ESxf9IWzhywQMtusPWZN_QGouxURpQkdHJZdLcdx2vUORZw&s=10", sub: "2022", exclusive: true },
+              { title: "Running on Empty Dreams", img: "https://m.media-amazon.com/images/M/MV5BMjEzOTQxNjcxMF5BMl5BanBnXkFtZTcwODQyMTE0Mg@@._V1_.jpg", sub: "2009", exclusive: true },
+              { title: "The Owls", img: "https://m.media-amazon.com/images/M/MV5BNTg3YzIwZjUtN2E4Ni00NGE1LWFjYjItZmVkMzQyYTYyMzk4XkEyXkFqcGc@._V1_.jpg", sub: "2010", exclusive: true },
+              { title: "Wild Eyed and Wicked", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQkMb2dPkPATjLVh8N-YdhK71KsoPpTcksKEt_a009pjQ&s=10", sub: "2023", exclusive: true },
+              { title: "Lowlifes", img: "https://m.media-amazon.com/images/M/MV5BZjExY2U3YWUtYTQ1ZS00YWY3LTg0NzQtOTk5YTNhN2Q2Y2U2XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Mistério",
+        icon: "🔎",
+        pills: [],
+        groups: [
+          {
+            name: "Mistério",
+            items: [
+              { title: "Visions", img: "https://m.media-amazon.com/images/M/MV5BZGQ3ZmMwMDgtMTlhNC00ZDM1LWE2ODYtMDllZDIyZjFiNTFmXkEyXkFqcGc@._V1_.jpg", sub: "2023", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Comédia",
+        icon: "😂",
+        pills: [],
+        groups: [
+          {
+            name: "Comédia",
+            items: [
+              { title: "Prom Dates", img: "https://m.media-amazon.com/images/M/MV5BYmRhOGRiZmEtNGJiYS00NWQ0LTgyZDMtMzgwMzBlNzY3ZjQ5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Queens of the Dead", img: "https://ingresso-a.akamaihd.net/prd/img/movie/queens-of-the-dead/5b544835-fc32-4dfc-9e59-477b17a9499a.webp", sub: "2025", exclusive: true },
+              { title: "The Wedding Banquet", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDcPtrgG22NJJR_U2PT6xeF7427Vd4x1m7e4wNqeHl9N3QaUhbvNWL6Wza&s=10", sub: "2025", exclusive: true },
+              { title: "Drive-Away Dolls", img: "https://m.media-amazon.com/images/M/MV5BNWNlMDc2NjAtM2VkMC00YjU5LTliODEtYzlmNWQyMGMyNWE2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Honey Don't!", img: "https://m.media-amazon.com/images/M/MV5BZGUzYTIxMTgtMDFlZS00ODU3LWI1YzYtYTVjOGNhNTMzMGMzXkEyXkFqcGc@._V1_.jpg", sub: "2025", exclusive: true },
+              { title: "La llamada", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHwI7NCcAJTf9PWi4QwylHQ0pMg0XVzWZQi01wGsr77g&s=10", sub: "2017", exclusive: true },
+              { title: "Camila Comes Out Tonight", img: "https://br.web.img3.acsta.net/c_310_420/pictures/22/05/25/12/22/2311907.jpg", sub: "2021", exclusive: true },
+              { title: "The Guest House", img: "https://m.media-amazon.com/images/M/MV5BMTQ2MTIyNTM0OF5BMl5BanBnXkFtZTcwOTEwNjA4NA@@._V1_.jpg", sub: "2012", exclusive: true },
+              { title: "Rent", img: "https://m.media-amazon.com/images/S/pv-target-images/5008c2a67e97174f551c260f4361799f5087464fbc274cd6c47ea1a0684b6081.jpg", sub: "2005", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Migalhas Sáficas",
+        icon: "🐾",
+        pills: [],
+        groups: [
+          {
+            name: "Migalhas Sáficas",
+            items: [
+              { title: "Anyone But You", img: "https://m.media-amazon.com/images/M/MV5BNWQ2YmQ5NzgtMzA1YS00MTkwLWI0MjAtZjhlMTEyNTIxN2UyXkEyXkFqcGc@._V1_.jpg", sub: "2023", exclusive: true },
+              { title: "French Girl", img: "https://m.media-amazon.com/images/M/MV5BYmMwMzE0NTMtY2NlMi00OTMxLTlhOWYtMDhlNGQ0NzE1ZGMxXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Dreams", img: "https://br.web.img3.acsta.net/c_310_420/img/35/88/358834688fc42d7ce12c3b59c514f9f9.jpg", sub: "2025", exclusive: true },
+              { title: "Les Enfants Vont Bien", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8QcNM-u9_QcAOm2IvFfeLIqzCoUdMDWASTRi2ktzqzA&s=10", sub: "2026", exclusive: true },
+              { title: "Fuori", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROWDWisTrzWqWQsOekWwPhOTXVDkNH_ioxi0UKO9nkPw&s", sub: "2025", exclusive: true },
+              { title: "Stone Cold Fox", img: "https://m.media-amazon.com/images/M/MV5BYmIwMzMzNGQtMzdhZi00N2I3LWEwZjgtMjBhOGJkOWFkZjljXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "Les Fantasmes", img: "https://m.media-amazon.com/images/M/MV5BMTNkODRjZDgtZjE0ZC00NTE0LTk2ODMtYWE1OWJlZjU2ODJmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2021", exclusive: true },
+              { title: "Time Cut", img: "https://m.media-amazon.com/images/M/MV5BYTI4OTNkZjMtY2EwYy00ZGFhLTlmYzYtYjUyY2Q1OGYxYTQ1XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+              { title: "Despite the Falling Snow", img: "https://m.media-amazon.com/images/M/MV5BMTgxNTkyOTU4MF5BMl5BanBnXkFtZTgwNzI4MjQxODE@._V1_.jpg", sub: "2016", exclusive: true },
+              { title: "Ashley", img: "https://m.media-amazon.com/images/M/MV5BMjAxMDM4NTc4Ml5BMl5BanBnXkFtZTcwMDEwMzYwOQ@@._V1_FMjpg_UX1000_.jpg", sub: "2013", exclusive: true },
+              { title: "Another Simple Favor", img: "https://m.media-amazon.com/images/M/MV5BMDBhNTg1MWMtMDc5Ni00YTk1LWFjNGUtMmE2Y2Q5MGQ2M2Q2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Asiáticos",
+        icon: "🌏",
+        pills: [],
+        groups: [
+          {
+            name: "Asiáticos",
+            items: [
+              { title: "Blue", img: "https://m.media-amazon.com/images/M/MV5BM2U5Mjg2N2QtMjM4MC00M2NhLTgxNjgtZDk2YTJjZDU1Y2I4XkEyXkFqcGc@._V1_.jpg", sub: "2002", exclusive: true },
+              { title: "Concetta", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQOir-iUNJmYGjUo7lOrt6kqKte69kbiXYtPIJwJ479QQ&s=10", sub: "2024", exclusive: true },
+              { title: "A Happy Wedding", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcReZ_T8OunmOtl3jw7pgFN0UYxVeMN7ZZqheARpkAURu1o2Rx008mDycwU&s=10", sub: "2025", exclusive: true },
+              { title: "Flat Girls", img: "https://m.media-amazon.com/images/M/MV5BYTE1ZjNhMmEtODFmOS00ZTI4LTllN2EtOTIyMmQ0ZDIwNDhmXkEyXkFqcGc@._V1_.jpg", sub: "2025", exclusive: true },
+              { title: "Teacher's Pet", img: "https://m.media-amazon.com/images/M/MV5BZjQ0ZGIyMDUtNTVmYy00YTY2LWEzN2QtZGUyYTAzMGQ3ZmFjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "Uranus 2324", img: "https://m.media-amazon.com/images/M/MV5BMDNlMmExM2UtY2FmYy00Yzc0LWI4MmMtZWQ4MzE5MmE1ZTUzXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Heavy Snow", img: "https://i.mydramalist.com/Lwq1Ar_4f.jpg", sub: "2023", exclusive: true },
+              { title: "Soulmate", img: "https://resizing.flixster.com/pTvm0I6r_xGNzopvnCJrXgwezRE=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzY2OTUxNjc3LWVkOGUtNGYxYi1hYTFjLTc1YjI0ZTdjNjVkNS5qcGc=", sub: "2023", exclusive: true },
+              { title: "Green Night", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb_CEwiA0WfLAmnGq-dWvB78dRJwXmgBf2NIvR-BmvtOhEoscltz4Wh3g_&s=10", sub: "2023", exclusive: true },
+              { title: "As Filhas do Botânico", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgIp9-wvGoXnyw8teN6liyGf7EMAmP2efB9MRRbXGtfQ_H_sokN3wGf7I&s=10", sub: "2006", exclusive: true },
+              { title: "The First Girl I Loved", img: "https://a.ltrbxd.com/resized/film-poster/7/8/8/0/2/3/788023-the-first-girl-i-loved-0-600-0-900-crop.jpg?v=f86c35dc17", sub: "2021", exclusive: true },
+              { title: "So Close", img: "https://m.media-amazon.com/images/M/MV5BZTA1NGI4YjAtODY2Zi00M2EwLTllN2QtNjc4ZmMyYTUxMjk3XkEyXkFqcGc@._V1_.jpg", sub: "2002", exclusive: true },
+              { title: "The Dream Songs", img: "https://media.fstatic.com/r8DmjnJT7yHgD_gEYLgWvjAggB0=/600x889/smart/filters:format(webp)/media/movies/covers/2022/09/FbD7NUAWAAAfqYp.jpg", sub: "2022", exclusive: true },
+              { title: "Spider Lilies", img: "https://m.media-amazon.com/images/M/MV5BMjA1NjI4OTQ2MF5BMl5BanBnXkFtZTcwMjEyNzkzMg@@._V1_.jpg", sub: "2007", exclusive: true },
+              { title: "Moonlit Winter", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_TpfzwtM1pSsj9nnTbJkxDpDDT3P8qSnLDLc5-BqAh7z8JXjv-rYSlsA&s=10", sub: "2019", exclusive: true },
+              { title: "No Heaven, But Love", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQHdq8zZSixI-MildHraSrHThXtrg0rkgf0rUeuhE1SdaimuaKe9edXcI7U&s=10", sub: "2023", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Natal",
+        icon: "🎄",
+        pills: [],
+        groups: [
+          {
+            name: "Natal",
+            items: [
+              { title: "The Christmas Writer", img: "https://play-lh.googleusercontent.com/fyGYG0AUonYDe2zsTXbAjoljpdKY7TDnWoU8r7HrjvUdDs-3XdcFhBv3Q1vO-LpfxjTndcKg85ffx5uDwQ=w240-h480-rw", sub: "2025", exclusive: true },
+              { title: "The Christmas Baby", img: "https://m.media-amazon.com/images/M/MV5BNDJiOGVhNzMtODM4My00NjVlLTk4NDAtNGEwNTI1MzYyMTdiXkEyXkFqcGc@._V1_.jpg", sub: "2025", exclusive: true },
+              { title: "The Holiday Club", img: "https://m.media-amazon.com/images/M/MV5BMjFmNDA3YjAtY2IxMy00YjQxLThmY2UtNWJhNmMwODc3MWZmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Last ExMas", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuHkyxB54Ix9m9NZcWQ1xcMiyZVZdtzpGeZ8d8sFpzXQ&s=10", sub: "2024", exclusive: true },
+              { title: "Friends & Family Christmas", img: "https://m.media-amazon.com/images/S/pv-target-images/21b777564a18db7e9b67abd2de92ac074e6bbd17e2d9d6f312eeaa45c1dc2ab3.jpg", sub: "2023", exclusive: true },
+              { title: "It's a Wonderful Knife", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzr2bSnDfAn0gkVWqktu0QTF8gnKVBWxaAf7RLzTF7_LO5mlehEtMvFzk&s=10", sub: "2023", exclusive: true },
+              { title: "Oh. What. Fun.", img: "https://m.media-amazon.com/images/M/MV5BNmM2ZDYxNWItMDBlNS00ZWE0LWI5NTctMGY0NDBhMjA1OWMwXkEyXkFqcGc@._V1_.jpg", sub: "2025", exclusive: true },
+              { title: "A Firefighter's Christmas Calendar", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTtiMuOXb5pKrCe99IxnUg2BLMvsqFd4PkgdavF07mmNQ&s", sub: "2022", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Ano Novo",
+        icon: "🎆",
+        pills: [],
+        groups: [
+          {
+            name: "Ano Novo",
+            items: [
+              { title: "I Hate New Year's", img: "https://m.media-amazon.com/images/M/MV5BNTM4YzcxNjItMGJiNy00ZDZkLWFmY2UtYjQyMzRjOTJlYjM0XkEyXkFqcGc@._V1_.jpg", sub: "2020", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Final Feliz",
+        icon: "💛",
+        pills: [],
+        groups: [
+          {
+            name: "Final Feliz",
+            items: [
+              { title: "Am I Ok?", img: "https://m.media-amazon.com/images/S/pv-target-images/511405a826f3e8cfb1d878b486fabefb0c2493c0fc68e6614fd4f6d1ccd4f907.jpg", sub: "2022", exclusive: true },
+              { title: "Backspot", img: "https://m.media-amazon.com/images/S/pv-target-images/b179032905e0f6f646597c2013a9cbc80cde96bf4388e5d10bfda1377ed0863c.jpg", sub: "2023", exclusive: true },
+              { title: "Wynonna Earp : Vengeance", img: "https://m.media-amazon.com/images/M/MV5BZmMwNTdjMjAtZDM0Ny00Yjc0LWI0YWItYmNlYzZiZWMyNmIyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Concerto para Abigail", img: "https://m.media-amazon.com/images/M/MV5BNzY3MzYxMGUtOTgyZi00ZWQ5LWI4ZGEtN2Q4MDkwZDllNTk2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2024", exclusive: true },
+              { title: "Along Came Wanda", img: "https://m.media-amazon.com/images/M/MV5BZWVkOTFkM2UtMzBjZC00MjE4LTk2YjAtZGRiODllNzZhZDNjXkEyXkFqcGc@._V1_.jpg", sub: "2021", exclusive: true },
+              { title: "A Million Happy Nows", img: "https://canvas-lb.tubitv.com/opts/Th7NpCf5l42J8w==/20cdfe8c-36fc-4a2f-bff8-c2190f03ea2d/CIACEPACOgUxLjEuOQ==", sub: "2016", exclusive: true },
+              { title: "And Then Came Lola", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS39R4tV8aH8CjpTF77XOUy2lt-35T3NPLkPgpwMpXUQA&s=10", sub: "2009", exclusive: true },
+              { title: "Signature Move", img: "https://m.media-amazon.com/images/S/pv-target-images/ba5d78bddfccaddd3cf129a31e573667a97bd8b67b143e00bb483ff812404d1e.jpg", sub: "2017", exclusive: true },
+              { title: "Go Fish", img: "https://m.media-amazon.com/images/M/MV5BOTA3MDQ2NDY2Nl5BMl5BanBnXkFtZTgwMzI1NzU2NzE@._V1_.jpg", sub: "1994", exclusive: true },
+              { title: "Princess Cyd", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAIeP-_x7aHsGumtC_OuB2dl601ekVu9rndZjiHO0Cld7e776aniU4_nlb&s=10", sub: "2017", exclusive: true },
+              { title: "Sem Medo de Amar", img: "https://m.media-amazon.com/images/S/pv-target-images/537c2c3054d1dcb6344cb0d336c480fceffc968ae5528da8c76471954f77e9eb.jpg", sub: "2022", exclusive: true },
+              { title: "Hearts Beat Loud", img: "https://m.media-amazon.com/images/S/pv-target-images/bf25dca57bae161ac65719d9304f790e92c2d14c6e0def891553009a085b6cec.jpg", sub: "2018", exclusive: true },
+              { title: "The Queen Of My Dreams", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpCdn4ZH_kSp0GcQ4yBvRxT-xp1EWi_V-Bop60niYaLy57_EV9vX9Pqhg&s=10", sub: "2023", exclusive: true },
+              { title: "Plano B", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTnzdUmNzbctiprUrGnYRrpnBWIpTEC_W9tC80-QelT1A&s=10", sub: "2021", exclusive: true },
+              { title: "Gridiron Grind", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSpAtnBknI9oyBmaXXVB6mfNRW8ZsPqaFm9RFf750VqsRG3wqgA6BGdIk&s=10", sub: "2023", exclusive: true },
+              { title: "Same But Different", img: "https://a.ltrbxd.com/resized/film-poster/5/1/5/4/4/5/515445-same-but-different-a-true-new-zealand-love-story-0-600-0-900-crop.jpg?v=1823a6f7a0", sub: "2019", exclusive: true },
+              { title: "First Girl I Loved", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKIyTEOlCBH7Gv7mQueEJCuVEy5Yj_TLsI_fw93HbYvDKlhfgjkqLzJTmk&s=10", sub: "2016", exclusive: true },
+              { title: "Jovem Alocada", img: "https://br.web.img3.acsta.net/pictures/14/01/13/19/04/521616.jpg", sub: "2012", exclusive: true },
+              { title: "Situationship", img: "https://m.media-amazon.com/images/M/MV5BYjlhYjBhNzgtZjE5NC00NGQzLWIwNjYtYjA1OWZhYzZkYWU2XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "See You Soon", img: "https://m.media-amazon.com/images/M/MV5BY2I2MzIwYmYtNDJmYy00MDU2LWFjN2ItNDhmODMyNmI1ODdjXkEyXkFqcGc@._V1_.jpg", sub: "2025", exclusive: true },
+              { title: "Superbloom", img: "https://m.media-amazon.com/images/M/MV5BZDE2ZGU0ODctMGJkMC00Yzg4LTliM2QtMDI5NzQ0YWQwOTdmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "Witchy Way", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeJKCn_2kATUIBDNegvWprSgD2_mjnT1qCp0_rf0oDNqbC1mzDGz4UtbCI&s=10", sub: "2024", exclusive: true },
+              { title: "Nova e Alice", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYzwnWAfzZPjFMB86tJXjOTajpRhGpf3yqX1Ao6Dw1Gw&s=10", sub: "2024", exclusive: true },
+              { title: "What a Feeling", img: "https://m.media-amazon.com/images/M/MV5BZTVhYzk3ZjEtNTkyMS00YmJiLThmNDItMDc5MGFmMjg3OWZjXkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+              { title: "Até que a Vida nos Separe", img: "https://m.media-amazon.com/images/M/MV5BMDViZjllYTUtNDU4Mi00NmUzLTlhNGMtNDQxNTcyNTNiYjhkXkEyXkFqcGc@._V1_.jpg", sub: "2022", exclusive: true },
+              { title: "With A Kiss I Die", img: "https://br.web.img3.acsta.net/pictures/21/11/19/17/57/0126912.png", sub: "2018", exclusive: true },
+              { title: "Heartstopper Forever", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQb16u5H7srVrCMEHPjEa1VeMIMHMtX5Wq0yYS9Po0JkQ&s=10", sub: "2026", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: NOVELAS ─────────────────────────────────────── */
+  "Novelas": {
+    sidebar: [
+      {
+        label: "Novelas",
+        icon: "📖",
+        pills: [],
+        groups: [
+          {
+            name: "Novelas",
+            items: [
+              { title: "Três Graças", img: "https://m.media-amazon.com/images/M/MV5BMmQxM2UwZTAtYmFjMS00NzA3LTlmZWUtMWQ2ZGU2NWI4ODc5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "Completa", exclusive: true },
+              { title: "Sueños de Libertad", img: "https://m.media-amazon.com/images/M/MV5BM2VkMzk5NTctNmZkMi00N2ZjLTlkNjktYzhiNzhkMjAwZjA2XkEyXkFqcGc@._V1_.jpg", sub: "77 Capítulos Dublada", exclusive: true },
+              { title: "Amar a Morte", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXXRj29YgG5ET4A_F090tcsfzn5i2LeacuYNBI9nAIdLK5MRqgi9DcKWw&s=10", sub: "Completa Dublada", exclusive: true },
+              { title: "Juliantina", img: "https://m.media-amazon.com/images/M/MV5BNjEyZGQ4OTktZjRjNS00MjVkLWEwODMtZjE3NzdkNjE0MDY4XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "Cenas Espanhol", exclusive: true },
+              { title: "Guerreiros do Sol", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmQ0a5ViGVcJeU76Cs0YEX8H1YPoIwaUxU37PFsTdkRBgsTb6j6cT_QfBk&s=10", sub: "Completa", exclusive: true },
+              { title: "Beleza Fatal", img: "https://m.media-amazon.com/images/M/MV5BODJhMjNkY2ItYzE4NC00ZDA0LWE2MWQtMmEzZmMzZjFmNWM3XkEyXkFqcGc@._V1_.jpg", sub: "1ª Parte Completa", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: NOVELAS VERTICAIS ───────────────────────────── */
+  "Novelas Verticais": {
+    sidebar: [
+      {
+        label: "Novela Vertical",
+        icon: "📱",
+        pills: [],
+        groups: [
+          {
+            name: "Novelas Verticais",
+            items: [
+              { title: "Say Yes To My Tomboy Roommate", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrq4x-cUPr7zmYCV2fro0wBy636OgYuP5CXeqHziLT1U0ADy4YKdf0wOXI&s=10", country: "Vertical", exclusive: true },
+              { title: "Fascinada pela minha Professora", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSroEF3R9chvGsKTK-bmTd4GGrN2aFmwsW4YIIyhpnYB8c6lCrTlJKS0c&s=10", country: "Vertical", exclusive: true },
+              { title: "Minha Luna", img: "https://awscover.netshort.com/tos-vod-mya-v-da59d5a2040f5f77/imageG/production/2037726210678587393/1775288316934-8560119250204866-3%E6%AF%944jpg~tplv-vod-noop.image", country: "Vertical", exclusive: true },
+              { title: "Acorrentada pelo Amor", img: "https://m.media-amazon.com/images/M/MV5BMjNmZmM2NWMtZjI0Ni00MmEyLWE1MDAtMGU5YWI5ZjdiZmNkXkEyXkFqcGc@._V1_.jpg", country: "Vertical", exclusive: true },
+              { title: "Sou A Obsessão Mais Perigosa Dela", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6YHMPiA1QY-S9xYBq4IE2w1332y8tf6r-kw&s", country: "Vertical", exclusive: true },
+              { title: "Coração em Cativeiro", img: "https://l2playoficial.com.br/wfe/wp-content/uploads/2025/12/DUBLADO_20251220_162311_0000.png", country: "Vertical", exclusive: true },
+              { title: "Minha Mentora Sexy Me Seduziu", img: "https://m.media-amazon.com/images/M/MV5BYTQ4ODAxMDYtOGZiNC00MzY3LTg2ZjEtYzQ5ZjQ0ZjIxOGE4XkEyXkFqcGc@._V1_.jpg", country: "Vertical", exclusive: true },
+              { title: "A Princesa da Máfia e a Garota Nova", img: "https://m.media-amazon.com/images/M/MV5BN2E3M2FjNjMtOWJmNS00MTA3LTljM2MtYTYzM2Q5NzQ1ODc4XkEyXkFqcGc@._V1_QL75_UY281_CR155,0,190,281_.jpg", country: "Vertical", exclusive: true },
+              { title: "Um Verão no Meio de Tudo", img: "https://m.media-amazon.com/images/M/MV5BNWEyZmIzNGEtOTBiNC00MTEwLTk5YzEtOTQ5NTJiNjg3M2FmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", country: "Vertical", exclusive: true },
+              { title: "Sob a Proteção Dela", img: "https://clapdrama.com.br/capa/sob-a-protecao-dela-30523.jpg", country: "Vertical", exclusive: true },
+              { title: "Sede de Sangue", img: "https://clapdrama.com.br/capa/sede-de-sangue-30359.jpg", country: "Vertical", exclusive: true },
+              { title: "The Queen's Only Girl", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmpj_bi9ieEi20MCg1plPSWx1Hl3epUFEQ04eNgz9HVm_ZygL2UvXy5kZT&s=10", country: "Vertical", exclusive: true },
+              { title: "Me Quebre, Princesa", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRB2OWHVuuyE7aVeQiB-atxqdt-uyzSpSlQLdMLXvywiA&s=10", country: "Vertical", exclusive: true },
+            ]
+          },
+        ]
+      },
+      {
+        label: "Feitas com IA",
+        icon: "🤖",
+        pills: [],
+        groups: [
+          {
+            name: "Feitas com IA",
+            items: [
+              { title: "Sua Garota dos Sonhos Me Quer", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTITBaZ2yc-HyxsfQbQLeihhlzAL1zh6n-bNjQS0ai2bA&s", country: "Vertical", exclusive: true },
+              { title: "My Seduction Trainee Feel For Me", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1uu8Vu5q8Zgjrs_RNFOwu4De18Jbp22GIbRxzDnRMtTGccj4NmpTWeE-N&s=10", country: "Vertical", exclusive: true },
+              { title: "Sob Cobertura: Na Cama da Patroa", img: "https://zshipubcf.farsunpteltd.com/playlet/1786608031_WtrZz2hYpr.jpg", country: "Vertical", exclusive: true },
+              { title: "A Falsa Noiva da Rainha da Máfia", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4nv_kYxKaX2TT5sXhlSN4HXUuifWVEld_G_8q8G-Tri35GIhZj2gViKE&s=10", country: "Vertical", exclusive: true },
+              { title: "Segredos sob a Saia", img: "https://awscover.netshort.com/tos-vod-mya-v-da59d5a2040f5f77/18d7713f2481434daf4e51fcedca66a1~tplv-vod-noop.image", country: "Vertical", exclusive: true },
+              { title: "A Irmã que eu não Deveria Amar", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTezcVmn93ijI4pzReW_VukQ1ZpChjP80ro9ylHRkDS2Q&s=10", country: "Vertical", exclusive: true },
+              { title: "A Musa em Renda Preta", img: "https://clapdrama.com.br/capas/32131.jpg", country: "Vertical", exclusive: true },
+              { title: "Sua Dominadora da Máfia", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRPgX6LO_IvT4EjrfiDnlCdyqviFYbnaFuBIa_bn_vkwA&s=10", country: "Vertical", exclusive: true },
+              { title: "Sexy Love Rival Keeps Tempting", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc6wjFYvUnAyXHAWry0bQeSjTWESwlbVLDsQXlrgHobQ&s=10", country: "Vertical", exclusive: true },
+              { title: "Beije-Me Capitã", img: "https://playdrama.com.br/capas/32898.jpg", sub: "Parte 1", country: "Vertical", exclusive: true },
+              { title: "Taste Me", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRV-nTfzSo1VqEhHyu3qYFk4zqDH90rDgnZXl1O30lMmg&s", country: "Vertical", exclusive: true },
+              { title: "My Rival, My Secret", img: "https://s1.dmcdn.net/v/cdgqo1gMNFiy7uLqx/x720", country: "Vertical", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: REALITYS ────────────────────────────────────── */
+  "Realitys": {
+    sidebar: [
+      {
+        label: "Realities",
+        icon: "🎙️",
+        pills: [],
+        groups: [
+          {
+            name: "Realities",
+            items: [
+              { title: "I Kissed A Girl", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mMgCKbFGpKO766UmmDn5TJwowU3.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "The Seput", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcRjKHjib-hL3X0M8Kt0ULZtrAg9ISc4fKH3-qusUwqg48kX2UG755tKnI&s=10", sub: "1 Temporada", exclusive: true },
+              { title: "I Kissed A Girl - Holanda", img: "https://pbs.twimg.com/media/GoM0oXdXQAAgkIP.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "The Real L Word", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/8dO19NfZBWJC5lgOTAh4N9HiETX.jpg", sub: "3 Temporadas", exclusive: true },
+              { title: "To Get Her", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/wfbQezNFqz0enWdnDQfK2QpWPyU.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Ultimato Queer Love", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/5oRJHZ0xf4koXbNKONacJUw3Rdg.jpg", sub: "2 Temporadas", exclusive: true },
+              { title: "Terceira Metade", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/mjkXW28MaexZB7HAT6rpki4XADI.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Love Moment", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/76ywzQeVjCdnxTAgL4Kt0BCzHiQ.jpg", sub: "1 Temporada", exclusive: true },
+              { title: "Love X", img: "https://media.themoviedb.org/t/p/w600_and_h900_face/1Efl3FhOQolH8AHU2B9f29AcmDo.jpg", sub: "1 Temporada", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: YURIS ───────────────────────────────────────── */
+  "Yuris": {
+    sidebar: [
+      {
+        label: "Yuris",
+        icon: "🌸",
+        pills: [],
+        groups: [
+          {
+            name: "Yuris",
+            items: [
+              { title: "Sayonara Lara", img: "https://a.storyblok.com/f/178900/1460x2124/50cf042f3f/goodbye_lara_lara_mermaid_form.jpg/m/filters:quality(95)format(webp)", sub: "2026 (Eps 5-8)", exclusive: true },
+              { title: "Kimi ga Shinu made Koi wo Shitai", img: "https://pbs.twimg.com/media/GlCbsdXXwAA6EBA.jpg", sub: "2026 (Eps 5-8)", exclusive: true },
+              { title: "Tai-Ari deshita. Ojō-sama wa Kakutō Game Nante Shinai", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxDDM-0WDWOH2UvvC7f0TJM7jWdMp6f5126FNYpzqojO5BU9klPoq0vMI&s=10", sub: "2026 (Eps 5-8)", exclusive: true },
+              { title: "This Monster Wants to Eat Me", img: "https://a.storyblok.com/f/178900/750x1047/0725f9a770/this_monster_wants_to_eat_me_anime_announcement_celebration_art.jpg/m/filters:quality(95)format(webp)", sub: "2025", exclusive: true },
+              { title: "Roll Over and Die", img: "https://a.storyblok.com/f/178900/710x1000/c1f6624b5a/roll-over-and-die-image-visual.jpg/m/filters:quality(95)format(webp)", sub: "2026", exclusive: true },
+              { title: "Watashi ga Koibito ni Nareru Wake Nai jan, Muri Muri!", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTYbC3UrYHg-QIznHnP8A-em3BgG5yCYuleSUPEUALg3a9tc2xTzsX4gre6&s=10", sub: "2025", exclusive: true },
+              { title: "Bloom Into You", img: "https://m.media-amazon.com/images/M/MV5BODNlZGZmZjktNWEwNy00MTJlLWFiY2YtMDA1ZjQ5NDVkZTQ4XkEyXkFqcGc@._V1_.jpg", sub: "2018", exclusive: true },
+              { title: "Whisper Me a Love Song", img: "https://cdn.myanimelist.net/images/anime/1518/137892.jpg", sub: "2024", exclusive: true },
+              { title: "Revolutionary Girl Utena (Shoujo Kakumei Utena)", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwr-5UyKLd1eQqwvz1GDcRdFP5QXDlBbRpK9j1yqlR327PKw0ZBS4oEVY&s=10", sub: "1997", exclusive: true },
+              { title: "Sweet Blue Flowers (Aoi Hana)", img: "https://m.media-amazon.com/images/M/MV5BZDk4YmNmMTgtMzRjMi00ZmMxLTgwOTItNWE0M2ZmYzAyODNlXkEyXkFqcGc@._V1_.jpg", sub: "2009", exclusive: true },
+              { title: "Riddle Story of Devil (Akuma no Riddle)", img: "https://static.wikia.nocookie.net/riddlestoryofdevil/images/3/3d/Newtype_Scan_-_Unknown_Date_%283%29.jpg/revision/latest?cb=20190613112143", sub: "2014", exclusive: true },
+              { title: "Konohana Kitan", img: "https://m.media-amazon.com/images/M/MV5BY2E3YTkzNzItZTc4Zi00YTQ3LTg2NmItZDE3ZGE3MWU3NGEyXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2017", exclusive: true },
+              { title: "Sakura Trick", img: "https://a.ltrbxd.com/resized/film-poster/6/2/4/8/8/8/624888-sakura-trick-0-230-0-345-crop.jpg?v=20af5ac39f", sub: "2014", exclusive: true },
+              { title: "This Summer", img: "https://m.media-amazon.com/images/M/MV5BYjM0ZmEzMzMtNWRmZC00MzNjLTlmNjktZTQzZTIyZGNlODg3XkEyXkFqcGc@._V1_.jpg", sub: "2025", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: ANIMAÇÃO ────────────────────────────────────── */
+  "Animação": {
+    sidebar: [
+      {
+        label: "Animação",
+        icon: "✨",
+        pills: [],
+        groups: [
+          {
+            name: "Animação",
+            items: [
+              { title: "The Mighty Nein", img: "https://m.media-amazon.com/images/M/MV5BMTZkZGM1NTQtMTQ5My00NmY0LWJiMzYtNjMxMDc3NjUwYjVhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2025", exclusive: true },
+              { title: "ARK: The Animated Series", img: "https://m.media-amazon.com/images/M/MV5BNDJhMGQxZTgtYTBjNi00OGQ2LWE3NjQtZWUwMGNjNjdlODM3XkEyXkFqcGc@._V1_.jpg", sub: "2024", exclusive: true },
+              { title: "The Legend of Vox Machina", img: "https://static.wikia.nocookie.net/dublagem/images/4/46/A_Lenda_de_Vox_Machina.jpg/revision/latest?cb=20230220035848&path-prefix=pt-br", sub: "2022", exclusive: true },
+              { title: "The Owl House", img: "https://m.media-amazon.com/images/M/MV5BOWRlOTI4OWQtYjNkYy00MzZmLWI1MGQtZDQ3ZjQ1ZjZjNmYyXkEyXkFqcGc@._V1_.jpg", sub: "2020", exclusive: true },
+              { title: "A Lenda de Korra", img: "https://http2.mlstatic.com/D_NQ_NP_901262-MLB45551295906_042021-O.webp", sub: "2012", exclusive: true },
+              { title: "Arcane", img: "https://m.media-amazon.com/images/M/MV5BYjA2NzhlMDItNWRmZC00MzRjLWE3ZjAtZjBlZDAwOWY2ODdjXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2021", exclusive: true },
+              { title: "Lesbian Space Princess", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4RDssx19KKTmGKdtKah0l4fRVz4fVww_CDyQNZG4WhphtXG2UmNdY-uY&s=10", sub: "2024", exclusive: true },
+              { title: "The Second Best Hospital in the Galaxy", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdHfXEWPTwxfre825Rv24hF28W9HolXAsJTKIHSyXIhvtinEzzYzKZKIne&s=10", sub: "2024", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+  /* ── ABA: DOCUMENTÁRIOS ───────────────────────────────── */
+  "Documentários": {
+    sidebar: [
+      {
+        label: "Documentários",
+        icon: "🎥",
+        pills: [],
+        groups: [
+          {
+            name: "Documentários",
+            items: [
+              { title: "O Testamento: O Segredo de Anita Harley", img: "https://m.media-amazon.com/images/M/MV5BZmRhZTk2ZWYtZjllZS00ZTVjLWJhMDgtOTBmZDdmZmE4ODhmXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", sub: "2026", exclusive: true },
+              { title: "Euphoria A Look Back", img: "https://br.web.img3.acsta.net/img/cf/81/cf816cd3cf5a66eda3a77a1474ef404d.png", sub: "2026", exclusive: true },
+            ]
+          },
+        ]
+      },
+    ]
+  },
+
+};
+/* ============================================================
+   FIM DOS DADOS — não mexa abaixo desta linha
+   ============================================================ */
+
+let currentTab = Object.keys(DATA)[0];
+let currentSidebar = 0;
+let currentPill = "Todos";
+
+function render() {
+  renderTabs();
+  renderSidebar();
+  renderMain();
+}
+
+function renderTabs() {
+  const tabs = document.getElementById("topTabs");
+  tabs.innerHTML = Object.keys(DATA).map((tab, i) => {
+    const isExcl = DATA[tab].exclusive;
+    const cls = `top-tab${isExcl ? " exclusivo" : ""}${tab === currentTab ? " active" : ""}`;
+    const count = DATA[tab].sidebar.reduce((sum, s) => sum + s.groups.reduce((s2, g) => s2 + g.items.length, 0), 0);
+    return `<button class="${cls}" onclick="switchTab('${tab}')">${tab} <span style="font-size:10px;opacity:0.6">(${count})</span></button>`;
+  }).join("");
+}
+
+function switchTab(tab) {
+  currentTab = tab;
+  currentSidebar = 0;
+  currentPill = "Todos";
+  render();
+  window.scrollTo(0, 0);
+  closeSidebar();
+}
+
+function renderSidebar() {
+  const sb = document.getElementById("sidebar");
+  const tabData = DATA[currentTab];
+  sb.innerHTML = tabData.sidebar.map((s, i) => {
+    const cls = `sb-item${i === currentSidebar ? " active" : ""}`;
+    const count = s.groups.reduce((sum, g) => sum + g.items.length, 0);
+    const countBadge = ` <span style="font-size:11px;opacity:0.6">(${count})</span>`;
+    return `<button class="${cls}" onclick="switchSidebar(${i})"><span class="sb-icon">${s.icon}</span>${s.label}${countBadge}</button>`;
+  }).join("");
+}
+
+function switchSidebar(i) {
+  currentSidebar = i;
+  currentPill = "Todos";
+  renderSidebar();
+  renderMain();
+  closeSidebar();
+}
+
+function toggleSidebar() {
+  document.getElementById("sidebar").classList.toggle("open");
+  document.getElementById("sidebarOverlay").classList.toggle("open");
+}
+
+function closeSidebar() {
+  document.getElementById("sidebar").classList.remove("open");
+  document.getElementById("sidebarOverlay").classList.remove("open");
+}
+
+function renderMain() {
+  const main = document.getElementById("mainContent");
+  const tabData = DATA[currentTab];
+  const sideData = tabData.sidebar[currentSidebar];
+  if (!sideData) { main.innerHTML = ""; return; }
+
+  const pills = sideData.pills || [];
+  const allItems = sideData.groups.flatMap(g => g.items);
+  const pillsHtml = pills.length > 1
+    ? `<div class="pills">${pills.map(p => {
+        const count = p === "Todos"
+          ? allItems.length
+          : allItems.filter(i => i.country === p).length ||
+            sideData.groups.filter(g => g.name === p).flatMap(g => g.items).length;
+        const countBadge = count > 0 ? ` <span style="font-size:10px;opacity:0.7">(${count})</span>` : "";
+        return `<button class="pill${p === currentPill ? " active" : ""}" onclick="switchPill('${p}')">${p}${countBadge}</button>`;
+      }).join("")}</div>`
+    : "";
+
+  const groups = sideData.groups.map(g => {
+    const filtered = g.items.filter(item =>
+      currentPill === "Todos" ||
+      (item.country && item.country === currentPill) ||
+      (!item.country && g.name === currentPill)
+    );
+    if (!filtered.length) return "";
+    const count = filtered.length;
+    const cards = filtered.map(item => cardHtml(item)).join("");
+    return `<div class="cat-block">
+      <div class="cat-header">
+        <span class="cat-label">${g.name}</span>
+        <span class="cat-line"></span>
+        <span class="cat-count">${count} título${count !== 1 ? "s" : ""}</span>
+      </div>
+      <div class="grid">${cards}</div>
+    </div>`;
+  }).join("");
+
+  main.innerHTML = pillsHtml + (groups || `<div style="color:var(--muted);padding:60px;text-align:center">Nenhum título nesta categoria ainda.</div>`);
+}
+
+function cardHtml(item) {
+  const imgContent = item.img
+    ? `<img src="${item.img}" alt="${item.title}" loading="lazy" onerror="this.parentElement.innerHTML='<div class=no-img>🎬</div>'">`
+    : `<div class="no-img">🎬</div>`;
+  const exclBadge = item.exclusive ? `<span class="excl-badge">👑 Exclusivo</span>` : "";
+  const badge = item.badge ? `<span class="badge">${item.badge}</span>` : "";
+  const cls = `card${item.exclusive ? " exclusive" : ""}`;
+  return `<div class="${cls}">
+    <div class="card-poster">
+      ${imgContent}
+      ${exclBadge}${badge}
+    </div>
+    <div class="card-info">
+      <div class="card-title">${item.title}</div>
+      ${item.sub ? `<div class="card-sub">${item.sub}</div>` : ""}
+    </div>
+  </div>`;
+}
+
+function switchPill(p) {
+  currentPill = p;
+  renderMain();
+}
+
+function filterAll() {
+  const q = document.getElementById("searchInput").value.toLowerCase().trim();
+  const main = document.getElementById("mainContent");
+  const empty = document.getElementById("emptyMsg");
+  if (!q) { renderMain(); empty.style.display = "none"; return; }
+
+  let results = [];
+  Object.values(DATA).forEach(tab => {
+    tab.sidebar.forEach(s => {
+      s.groups.forEach(g => {
+        g.items.filter(i => i.title.toLowerCase().includes(q)).forEach(i => results.push(i));
+      });
+    });
+  });
+
+  empty.style.display = results.length ? "none" : "block";
+  if (!results.length) { main.innerHTML = ""; return; }
+  main.innerHTML = `<div class="cat-block">
+    <div class="cat-header"><span class="cat-label">Resultados</span><span class="cat-line"></span><span class="cat-count">${results.length}</span></div>
+    <div class="grid">${results.map(cardHtml).join("")}</div>
+  </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
